@@ -26,4 +26,4 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: run
       run: |
-        python publish_daily_post.py
+        python blog_to_telegram/publish_daily_post.py
