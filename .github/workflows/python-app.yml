@@ -6,7 +6,7 @@ name: publish-daily-post-to-telegram
 on: 
   workflow_dispatch:
   schedule:
-    - cron:  "0 8 * * *" 
+    - cron:  "0 5 * * *" 
 
 
 permissions:
