@@ -31,7 +31,7 @@ def daily_post_url():
     return json_response['blog']['posts'][0]['href']
 
 def post_content(url):
-    response = requests.get("https://www.tocode.co.il" + url + '/md')
+    response = requests.get("https://www.tocode.co.il" + url + '.md')
     return response.text
 
 def split_body_to_messages(body, max_length=4090):
