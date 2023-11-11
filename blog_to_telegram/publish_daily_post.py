@@ -47,7 +47,7 @@ def to_markdown_v2(text):
     f = io.StringIO(text)
     in_code = False
     for line in f:
-        if m := re.search("```language-(.*)$", line):
+        if m := re.search("```(?:language-)?(.*)$", line):
             escaped.append(f"```{m.group(1)}")
             in_code = True
         elif in_code and line.strip() == "```":
