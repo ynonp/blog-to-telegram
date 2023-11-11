@@ -56,7 +56,10 @@ def to_markdown_v2(text):
         elif in_code:
             escaped.append(line.replace("`", "\\`").replace("\\", "\\\\"))
         elif not in_code:
-            escaped.append(line.
+            entities = re.split("(\[.*?\]\(.*?\))", line)
+            for index, ent in enumerate(entities):
+                if index % 2 == 0:
+                    entities[index] = (ent.
                            replace('>', '\\>').
                            replace("+", "\\+").
                            replace("-", "\\-").
@@ -65,9 +68,11 @@ def to_markdown_v2(text):
                            replace("(", "\\(").
                            replace(")", "\\)").
                            replace("!", "\\!"))
+            escaped.append(''.join(entities))
         else:
             escaped.append(line)
     return ''.join(escaped)
+
 
 
 
