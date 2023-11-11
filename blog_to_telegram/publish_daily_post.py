@@ -48,7 +48,7 @@ def to_markdown_v2(text):
     in_code = False
     for line in f:
         if m := re.search("```(?:language-)?(.*)$", line):
-            escaped.append(f"```{m.group(1)}")
+            escaped.append(f"```{m.group(1)}\n")
             in_code = True
         elif in_code and line.strip() == "```":
             in_code = False
@@ -65,7 +65,8 @@ def to_markdown_v2(text):
                            replace("!", "\\!"))
         else:
             escaped.append(line)
-    return '\n'.join(escaped)
+    return ''.join(escaped)
+
 
 
 if __name__ == "__main__":
@@ -83,5 +84,5 @@ if __name__ == "__main__":
     bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
 
     for msg in split_body_to_messages(to_markdown_v2(body), 4000):
-        bot.sendMessage(chat_id, msg, parse_mode="Markdown")
+        bot.sendMessage(chat_id, msg, parse_mode="MarkdownV2")
 
