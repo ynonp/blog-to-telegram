@@ -40,6 +40,9 @@ def split_body_to_messages(body, max_length=4090):
 
     return fix_code_blocks(fix_spaces(output))
 
+def to_markdown_v2(text):
+    return re.sub(r'(?m)^#+\s*(.*)$', lambda m: f'* {m.group(1)} *', text)
+
 
 if __name__ == "__main__":
     TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
@@ -50,11 +53,11 @@ if __name__ == "__main__":
         url = daily_post_url()
 
     body = post_content(url)
-
+    
     chat_id = "@tocodeil"
     bot = telepot.Bot(TELEGRAM_TOKEN)
     bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
 
-    for msg in split_body_to_messages(body, 4000):
+    for msg in split_body_to_messages(to_markdown_v2(body), 4000):
         bot.sendMessage(chat_id, msg, parse_mode="MarkdownV2")
 
