@@ -47,10 +47,10 @@ def to_markdown_v2(text):
     f = io.StringIO(text)
     in_code = False
     for line in f:
-        if m := re.search("```(?:language-)?(.*)$", line):
+        if m := re.search("```(?:language-)?(.+)$", line):
             escaped.append(f"```{m.group(1)}\n")
             in_code = True
-        elif in_code and line.strip() == "```":
+        elif in_code and re.search("^```\s*$", line):
             in_code = False
             escaped.append(line)
         elif in_code:
@@ -62,10 +62,13 @@ def to_markdown_v2(text):
                            replace("-", "\\-").
                            replace("=", "\\=").
                            replace(".", "\\.").
+                           replace("(", "\\(").
+                           replace(")", "\\)").
                            replace("!", "\\!"))
         else:
             escaped.append(line)
     return ''.join(escaped)
+
 
 
 
@@ -81,7 +84,7 @@ if __name__ == "__main__":
     
     chat_id = "@tocodeil"
     bot = telepot.Bot(TELEGRAM_TOKEN)
-    bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
+    # bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
 
     for msg in split_body_to_messages(to_markdown_v2(body), 4000):
         bot.sendMessage(chat_id, msg, parse_mode="MarkdownV2")
