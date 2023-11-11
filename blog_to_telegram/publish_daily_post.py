@@ -84,7 +84,7 @@ if __name__ == "__main__":
     
     chat_id = "@tocodeil"
     bot = telepot.Bot(TELEGRAM_TOKEN)
-    # bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
+    bot.sendMessage(chat_id, "https://www.tocode.co.il" + url, disable_web_page_preview=None)
 
     for msg in split_body_to_messages(to_markdown_v2(body), 4000):
         bot.sendMessage(chat_id, msg, parse_mode="MarkdownV2")
