@@ -41,6 +41,17 @@ def split_body_to_messages(body, max_length=4090):
 
     return fix_code_blocks(fix_spaces(output))
 
+def escape_text(text):
+    return (text.
+                replace('>', '\\>').
+                replace("+", "\\+").
+                replace("-", "\\-").
+                replace("=", "\\=").
+                replace(".", "\\.").
+                replace("(", "\\(").
+                replace(")", "\\)").
+                replace("!", "\\!"))
+
 def to_markdown_v2(text):
     text = re.sub(r'(?m)^#+\s*(.*)$', lambda m: f'* {m.group(1)} *', text)
     escaped = []
@@ -59,15 +70,13 @@ def to_markdown_v2(text):
             entities = re.split("(\[.*?\]\(.*?\))", line)
             for index, ent in enumerate(entities):
                 if index % 2 == 0:
-                    entities[index] = (ent.
-                           replace('>', '\\>').
-                           replace("+", "\\+").
-                           replace("-", "\\-").
-                           replace("=", "\\=").
-                           replace(".", "\\.").
-                           replace("(", "\\(").
-                           replace(")", "\\)").
-                           replace("!", "\\!"))
+                    entities[index] = escape_text(ent)
+                else:
+                    # ent is something of the form: [text](href)
+                    # escape only the characters in text, ignoring href
+                    text, href = re.search(r'\[([^\]]+)]\(([^\)]+)\)', ent).groups()
+                    entities[index] = f"[{escape_text(text)}]({href})"
+
             escaped.append(''.join(entities))
         else:
             escaped.append(line)
