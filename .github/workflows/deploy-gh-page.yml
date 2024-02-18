@@ -44,15 +44,12 @@ jobs:
         working-directory: ./gh-pages
         run: npm run build
       - name: Setup Pages
-        working-directory: ./gh-pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
-        working-directory: ./gh-pages
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload dist repository
-          path: './dist'
+          path: './gh-pages/dist'
       - name: Deploy to GitHub Pages
-        working-directory: ./gh-pages
         id: deployment
         uses: actions/deploy-pages@v2
