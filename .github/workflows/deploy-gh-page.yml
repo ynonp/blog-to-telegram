@@ -32,11 +32,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Node
-        working-directory: ./gh-pages
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - name: Install dependencies
         working-directory: ./gh-pages
         run: npm install
